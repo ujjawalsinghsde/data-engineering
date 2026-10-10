@@ -1,11 +1,5 @@
 # SQL for Data Engineers
 
-These notes are written for an engineer who already understands programming and wants to become dangerous with SQL in real data work: ETL, ELT, warehouses, lakehouses, Databricks, AWS, and senior data engineering interviews.
-
-SQL is not just a query language. For a data engineer, SQL is how you inspect data, clean it, model it, validate pipelines, reconcile systems, build marts, debug failures, and explain business numbers with confidence.
-
-Prefer ANSI SQL mentally, then learn the dialect differences where they matter. PostgreSQL, MySQL, SQL Server, Oracle, Redshift, and Databricks SQL all share the core ideas, but functions and edge cases differ.
-
 ## 1. SQL Fundamentals
 
 ### SQL Basics
@@ -22,14 +16,7 @@ FROM table_name
 WHERE condition;
 ```
 
-**Simple example**
-
-```sql
-SELECT customer_id, email
-FROM customers;
-```
-
-**Data Engineering example**
+**Example**
 
 ```sql
 SELECT order_id, customer_id, order_date, total_amount
@@ -76,20 +63,13 @@ Logical order:
 9. `ORDER BY`
 10. `LIMIT`
 
-This matters because aliases from `SELECT` often cannot be used in `WHERE`, and aggregations cannot be filtered with `WHERE`.
-
 ### SELECT
 
 **What is it?** Chooses columns or expressions.
 
 **Why use it?** To project only the data needed for downstream transformation.
 
-```sql
-SELECT order_id, total_amount, total_amount * 0.18 AS tax_amount
-FROM orders;
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT
@@ -115,13 +95,7 @@ FROM raw_transactions;
 
 **Why use it?** Reduces data early, improves performance, and keeps transformations correct.
 
-```sql
-SELECT *
-FROM orders
-WHERE order_status = 'COMPLETE';
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT *
@@ -146,12 +120,7 @@ WHERE event_date >= DATE '2026-10-01'
 
 **Why use it?** Useful for exploration or deduped lists, but expensive on big data.
 
-```sql
-SELECT DISTINCT customer_id
-FROM orders;
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT DISTINCT source_system, batch_id
@@ -174,13 +143,7 @@ WHERE load_date = CURRENT_DATE;
 
 **Why use it?** Required when order matters, such as latest records or deterministic exports.
 
-```sql
-SELECT order_id, order_date
-FROM orders
-ORDER BY order_date DESC;
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT *
@@ -239,11 +202,6 @@ JOIN orders AS o
   ON c.customer_id = o.customer_id;
 ```
 
-**Common mistakes**
-
-- Reusing confusing aliases like `a`, `b`, `c` in long ETL queries.
-- Using a `SELECT` alias in `WHERE` where the dialect does not allow it.
-
 ### Operators
 
 Common operators:
@@ -264,10 +222,6 @@ WHERE total_amount >= 100
   AND order_status IN ('COMPLETE', 'SHIPPED');
 ```
 
-**Common mistakes**
-
-- Forgetting that `NOT IN` behaves unexpectedly when the list contains `NULL`.
-
 ### CASE WHEN
 
 **What is it?** SQL's conditional expression.
@@ -281,20 +235,7 @@ CASE
 END
 ```
 
-**Simple example**
-
-```sql
-SELECT
-  order_id,
-  CASE
-    WHEN total_amount >= 1000 THEN 'high'
-    WHEN total_amount >= 100 THEN 'medium'
-    ELSE 'low'
-  END AS order_value_band
-FROM orders;
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT
@@ -342,12 +283,7 @@ WHERE phone IS NULL;
 
 **Why use it?** Gives fallback values during cleansing and reporting.
 
-```sql
-SELECT COALESCE(phone, mobile_phone, 'unknown') AS contact_number
-FROM customers;
-```
-
-**DE example**
+**Example**
 
 ```sql
 SELECT
@@ -370,7 +306,7 @@ FROM orders;
 SELECT CAST('2026-10-05' AS DATE) AS order_date;
 ```
 
-**DE example**
+**Example**
 
 ```sql
 SELECT
@@ -1343,7 +1279,7 @@ SELECT
 FROM orders;
 ```
 
-`PARTITION BY` creates groups. `ORDER BY` decides order inside each group.
+`PARTITION BY` creates groups. `ORDER BY` decides order insiEach group.
 
 ### Ranking Functions
 
