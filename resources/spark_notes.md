@@ -72,6 +72,8 @@ flowchart TD
     E2 --> T23
 ```
 
+In Spark, the user submits an application. The driver builds the execution plan, asks the cluster manager for resources, and launches executors. The executors run tasks in parallel on partitions. When tasks finish, results and status flow back to the driver.
+
 Best practice: keep Spark partitions as a multiple of the number of cores.
 
 ## Spark Application Lifecycle
@@ -91,15 +93,15 @@ flowchart TD
     A --> B --> C --> D --> E --> F --> G --> H --> I
 ```
 
+After spark submit, the driver starts, creates a Spark session, asks the cluster manager for resources, executors start on worker nodes, tasks run on partitions, results return to the driver, and the application ends.
+
 Tasks are assigned in the form of JAR files. The driver returns the result to the user, then the application ends.
 
 ## Core Terminology
 
 ### Driver and Worker
 
-Driver and worker processes are JVM processes.
-
-A JVM, or Java Virtual Machine, is a software platform that allows Java programs and JVM-compatible languages such as Scala and Kotlin to run on different devices and operating systems. It provides an abstraction layer that converts Java bytecode into machine code.
+Driver is the central coordinator of a Spark application. It creates the execution plan, requests resources, schedules tasks, and monitors execution. Worker nodes are machines in the cluster that host executors, which perform the actual data processing in parallel.
 
 ### Application
 
