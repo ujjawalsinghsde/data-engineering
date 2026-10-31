@@ -93,7 +93,7 @@ flowchart TD
     A --> B --> C --> D --> E --> F --> G --> H --> I
 ```
 
-After spark submit, the driver starts, creates a Spark session, asks the cluster manager for resources, executors start on worker nodes, tasks run on partitions, results return to the driver, and the application ends.
+When a user submits an application using `spark-submit`, the Driver starts. It creates the Spark execution context and builds the logical execution plan. When an action is triggered, Spark creates a job. The DAG Scheduler divides the job into stages, and the Task Scheduler creates tasks for partitions. The Driver requests resources from the cluster manager, executors start on worker nodes, and tasks run on those executors. The Driver monitors execution, and results are returned to the Driver when required.
 
 Tasks are assigned in the form of JAR files. The driver returns the result to the user, then the application ends.
 
